@@ -502,7 +502,7 @@ export default {
     },
 
     displayValue() {
-      const formattedValue = formatAsFormatAndType(this.parsedValue, this.format, this.type, this.rangeSeparator);
+      let formattedValue = formatAsFormatAndType(this.parsedValue, this.format, this.type, this.rangeSeparator);
       if (Array.isArray(this.userInput)) {
         return [
           this.userInput[0] || (formattedValue && formattedValue[0]) || '',
@@ -511,6 +511,11 @@ export default {
       } else if (this.userInput !== null) {
         return this.userInput;
       } else if (formattedValue) {
+        // Support only DD-MMM-YYY format
+        const year = formattedValue.match(/[^-]+-[^-]+-(....)/)[1];
+        const newYear = parseInt(year, 10) + 543;
+        formattedValue = formattedValue.replace(year, newYear);
+
         return this.type === 'dates'
           ? formattedValue.join(', ')
           : formattedValue;

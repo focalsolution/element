@@ -355,6 +355,7 @@
       },
 
       handleYearPick(year) {
+        year = year - 543;
         if (this.selectionMode === 'year') {
           this.date = modifyDate(this.date, year, 0, 1);
           this.emit(this.date);
